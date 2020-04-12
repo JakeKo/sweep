@@ -8,8 +8,7 @@ function createBoardModel(width, height, mineCount) {
             x,
             y,
             isMine: false,
-            mineCount: 0,
-            isRevealed: false
+            mineCount: 0
         }))
     );
 
