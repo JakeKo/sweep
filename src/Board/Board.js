@@ -1,5 +1,6 @@
 import React from 'react';
 import './Board.css';
+import Cell from '../Cell/Cell';
 
 function createBoardModel(width, height, mineCount) {
     const boardModel = [...Array(width).keys()].map(x =>
@@ -41,10 +42,22 @@ function createBoardModel(width, height, mineCount) {
         boardString += '\n';
     }
     console.log(boardString);
+
+    return boardModel;
 }
 
 function Board() {
-    return (<div className='board' onClick={createBoardModel(5, 5, 5)}></div>);
+    return (
+        <div className='board'>
+            {createBoardModel(10, 10, 25).map(column =>
+                <div className='column'>
+                    {column.map(cell =>
+                        <Cell isMine={cell.isMine} mineNeighborCount={cell.mineNeighborCount} />
+                    )}
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default Board;
