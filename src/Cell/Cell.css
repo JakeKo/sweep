@@ -1,29 +1,40 @@
 .cell {
     height: 25px;
     width: 25px;
-    margin: 1px;
+    border: 1px solid grey;
+    background-color: white;
     display: inline-block;
-    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    font-size: 18px;
+}
+
+.cell:hover {
+    background-color: #92BCEA;
+    cursor: pointer;
 }
 
 .cell-mine {
     background-color: red;
+    border: 1px solid red;
 }
 
 .cell-value-1 {
-    color: orange;
+    color: blue;
 }
 
 .cell-value-2 {
-    color: yellow;
-}
-
-.cell-value-3 {
     color: green;
 }
 
+.cell-value-3 {
+    color: red;
+}
+
 .cell-value-4 {
-    color: blue;
+    color: indigo;
 }
 
 .cell-value-5 {
@@ -31,13 +42,13 @@
 }
 
 .cell-value-6 {
-    color: pink;
+    color: teal;
 }
 
 .cell-value-7 {
-    color: grey;
+    color: black;
 }
 
 .cell-value-8 {
-    color: black;
+    color: grey;
 }

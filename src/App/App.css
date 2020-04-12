@@ -11,11 +11,3 @@ html, body {
   align-items: center;
   background: #011627;
 }
-
-.greeting {
-  padding: 48px;
-  color: #92BCEA;
-  border: 2px solid #92BCEA;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 24px;
-}

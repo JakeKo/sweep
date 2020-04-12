@@ -8,7 +8,8 @@ function createBoardModel(width, height, mineCount) {
             x,
             y,
             isMine: false,
-            mineNeighborCount: 0
+            mineCount: 0,
+            isRevealed: false
         }))
     );
 
@@ -22,26 +23,18 @@ function createBoardModel(width, height, mineCount) {
         }));
     }
 
+    // Place the mines and increment the count of surrounding cells
     [...set].map(JSON.parse).forEach(({ x, y }) => {
-        if (x > 0 && y > 0) if (!boardModel[x - 1][y - 1].isMine) boardModel[x - 1][y - 1].mineNeighborCount++;
-        if (x > 0) if (!boardModel[x - 1][y].isMine) boardModel[x - 1][y].mineNeighborCount++;
-        if (x > 0 && y < height - 1) if (!boardModel[x - 1][y + 1].isMine) boardModel[x - 1][y + 1].mineNeighborCount++;
-        if (y > 0) if (!boardModel[x][y - 1].isMine) boardModel[x][y - 1].mineNeighborCount++;
+        if (x > 0 && y > 0) if (!boardModel[x - 1][y - 1].isMine) boardModel[x - 1][y - 1].mineCount++;
+        if (x > 0) if (!boardModel[x - 1][y].isMine) boardModel[x - 1][y].mineCount++;
+        if (x > 0 && y < height - 1) if (!boardModel[x - 1][y + 1].isMine) boardModel[x - 1][y + 1].mineCount++;
+        if (y > 0) if (!boardModel[x][y - 1].isMine) boardModel[x][y - 1].mineCount++;
         boardModel[x][y].isMine = true;
-        if (y < height - 1) if (!boardModel[x][y + 1].isMine) boardModel[x][y + 1].mineNeighborCount++;
-        if (x < width - 1 && y > 0) if (!boardModel[x + 1][y - 1].isMine) boardModel[x + 1][y - 1].mineNeighborCount++;
-        if (x < width - 1) if (!boardModel[x + 1][y].isMine) boardModel[x + 1][y].mineNeighborCount++;
-        if (x < width - 1 && y < height - 1) if (!boardModel[x + 1][y + 1].isMine) boardModel[x + 1][y + 1].mineNeighborCount++;
+        if (y < height - 1) if (!boardModel[x][y + 1].isMine) boardModel[x][y + 1].mineCount++;
+        if (x < width - 1 && y > 0) if (!boardModel[x + 1][y - 1].isMine) boardModel[x + 1][y - 1].mineCount++;
+        if (x < width - 1) if (!boardModel[x + 1][y].isMine) boardModel[x + 1][y].mineCount++;
+        if (x < width - 1 && y < height - 1) if (!boardModel[x + 1][y + 1].isMine) boardModel[x + 1][y + 1].mineCount++;
     });
-
-    let boardString = '';
-    for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-            boardString += boardModel[x][y].isMine ? 'M' : boardModel[x][y].mineNeighborCount;
-        }
-        boardString += '\n';
-    }
-    console.log(boardString);
 
     return boardModel;
 }
@@ -49,11 +42,9 @@ function createBoardModel(width, height, mineCount) {
 function Board() {
     return (
         <div className='board'>
-            {createBoardModel(10, 10, 25).map(column =>
-                <div className='column'>
-                    {column.map(cell =>
-                        <Cell isMine={cell.isMine} mineNeighborCount={cell.mineNeighborCount} />
-                    )}
+            {createBoardModel(25, 25, 100).map(column =>
+                <div className='column' key={Math.random()}>
+                    {column.map(cell => <Cell key={Math.random()} isMine={cell.isMine} mineCount={cell.mineCount} />)}
                 </div>
             )}
         </div>
