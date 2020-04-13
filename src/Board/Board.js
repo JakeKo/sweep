@@ -6,7 +6,7 @@ export default class Board extends React.Component {
     constructor(props) {
         super(props);
 
-        const mineCount = 100;
+        const mineCount = 50;
         const width = 25;
         const height = 25;
 
@@ -44,19 +44,33 @@ export default class Board extends React.Component {
             if (x < width - 1 && y < height - 1) if (!boardModel[x + 1][y + 1].isMine) boardModel[x + 1][y + 1].mineCount++;
         });
 
-        this.state = { matrix: boardModel };
+        this.state = {
+            width,
+            height,
+            matrix: boardModel
+        };
     }
 
     revealCell = (x, y) => {
-        // Ignore the reveal if the cell is already revealed
-        if (this.state.matrix[x][y].isRevealed) return;
+        const spreadReveal = (matrix, x, y) => {
+            if (matrix[x][y].isRevealed) return matrix;
+            matrix[x][y].isRevealed = true;
+            if (matrix[x][y].mineCount > 0 || matrix[x][y].isMine) return matrix;
 
-        this.setState({
-            matrix: this.state.matrix.map(column => column.map(cell => ({
-                ...cell,
-                isRevealed: cell.x === x && cell.y === y ? true : cell.isRevealed
-            })))
-        });
+            if (x > 0 && y > 0) matrix = spreadReveal(matrix, x - 1, y - 1);
+            if (x > 0) matrix = spreadReveal(matrix, x - 1, y);
+            if (x > 0 && y < this.state.height - 1) matrix = spreadReveal(matrix, x - 1, y + 1);
+            if (y > 0) matrix = spreadReveal(matrix, x, y - 1);
+            if (x < this.state.width - 1) matrix = spreadReveal(matrix, x + 1, y);
+            if (x < this.state.width - 1 && y > 0) matrix = spreadReveal(matrix, x + 1, y - 1);
+            if (y < this.state.height - 1) matrix = spreadReveal(matrix, x, y + 1);
+            if (x < this.state.width - 1 && y < this.state.height - 1) matrix = spreadReveal(matrix, x + 1,y + 1);
+
+            return matrix;
+        };
+
+        const newMatrix = spreadReveal(this.state.matrix, x, y);
+        this.setState({ matrix: newMatrix });
     }
 
     toggleFlagCell = (x, y) => {
