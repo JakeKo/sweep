@@ -2,6 +2,12 @@ import React from 'react';
 import './Board.css';
 import Cell from '../Cell/Cell';
 
+const BOARD_STATE = {
+    GAME_OVER: 'GAME OVER',
+    CONTINUE: 'CONTINUE',
+    WIN: 'WIN'
+};
+
 export default class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -30,9 +36,11 @@ export default class Board extends React.Component {
                 y: Math.round(Math.random() * (height - 1))
             }));
         }
+
     
         // Place the mines and increment the count of surrounding cells
-        [...set].map(JSON.parse).forEach(({ x, y }) => {
+        const minePositions = [...set].map(JSON.parse);
+        minePositions.forEach(({ x, y }) => {
             if (x > 0 && y > 0) if (!boardModel[x - 1][y - 1].isMine) boardModel[x - 1][y - 1].mineCount++;
             if (x > 0) if (!boardModel[x - 1][y].isMine) boardModel[x - 1][y].mineCount++;
             if (x > 0 && y < height - 1) if (!boardModel[x - 1][y + 1].isMine) boardModel[x - 1][y + 1].mineCount++;
@@ -47,7 +55,8 @@ export default class Board extends React.Component {
         this.state = {
             width,
             height,
-            matrix: boardModel
+            matrix: boardModel,
+            minePositions
         };
     }
 
@@ -71,15 +80,29 @@ export default class Board extends React.Component {
 
         const newMatrix = spreadReveal(this.state.matrix, x, y);
         this.setState({ matrix: newMatrix });
+        console.log(this.evaluateBoardState());
     }
 
     toggleFlagCell = (x, y) => {
+        // Ignore the attempt to toggle the cell flag if the cell is already revealed
+        if (this.state.matrix[x][y].isRevealed) return;
+
         this.setState({
             matrix: this.state.matrix.map(column => column.map(cell => ({
                 ...cell,
                 isFlagged: cell.x === x && cell.y === y ? !cell.isFlagged : cell.isFlagged
             })))
         });
+    }
+
+    evaluateBoardState = () => {
+        const revealedMine = this.state.minePositions.some(({ x, y }) => this.state.matrix[x][y].isRevealed && this.state.matrix[x][y].isMine);
+        if (revealedMine) return BOARD_STATE.GAME_OVER;
+
+        const nonMineCount = this.state.height * this.state.width - this.state.minePositions.length;
+        const revealedCount = this.state.matrix.reduce((sum, column) => sum + column.reduce((sum, cell) => sum + cell.isMine ? 0 : 1, 0), 0);
+
+        return nonMineCount === revealedCount ? BOARD_STATE.WIN : BOARD_STATE.CONTINUE;
     }
 
     render = () => {
