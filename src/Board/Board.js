@@ -64,7 +64,6 @@ export default class Board extends React.Component {
     }
 
     revealCell = (x, y) => {
-        // TODO: Handle user selecting a border non-zero cell
         const { height, width } = this.props;
         const spreadReveal = (matrix, x, y) => {
             if (matrix[x][y].isRevealed) return matrix;
@@ -85,6 +84,7 @@ export default class Board extends React.Component {
 
         const newMatrix = spreadReveal(this.state.matrix, x, y);
         this.setState({ matrix: newMatrix });
+        this.props.emitBoardState(this.evaluateBoardState());
     }
 
     toggleFlagCell = (x, y) => {
