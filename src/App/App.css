@@ -10,5 +10,52 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #011627;
+  background: #121212;
+}
+
+.game-controls {
+  margin-bottom: 24px;
+}
+
+.game-difficulty {
+  border: none;
+  outline: none;
+  font-family: monospace;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 6px;
+  margin: 0 8px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.game-difficulty option {
+  background-color: #121212;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.game-difficulty:after {
+  width: 0; 
+  height: 0; 
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white;
+  position: absolute;
+  top: 40%;
+  right: 5px;
+  content: "";
+}
+
+.game-reset {
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  outline: none;
+  font-family: monospace;
+  color: white;
+  padding: 6px 18px;
+  margin: 0 8px;
+  cursor: pointer;
+  border-radius: 4px;
 }

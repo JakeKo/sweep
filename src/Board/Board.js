@@ -58,8 +58,7 @@ export default class Board extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { height, width, mineCount } = this.props;
-        if (prevProps.height !== height || prevProps.width !== width || prevProps.mineCount !== mineCount) {
+        if (prevProps.id !== this.props.id) {
             this.setState(this.initializeBoard(this.props));
         }
     }
@@ -86,7 +85,6 @@ export default class Board extends React.Component {
 
         const newMatrix = spreadReveal(this.state.matrix, x, y);
         this.setState({ matrix: newMatrix });
-        console.log(this.evaluateBoardState());
     }
 
     toggleFlagCell = (x, y) => {
@@ -101,7 +99,6 @@ export default class Board extends React.Component {
         });
     }
 
-    // TODO: Fix game win condition
     evaluateBoardState = () => {
         const { height, width, mineCount } = this.props;
         const { matrix, minePositions } = this.state;
@@ -110,7 +107,7 @@ export default class Board extends React.Component {
         if (revealedMine) return BOARD_STATE.GAME_OVER;
 
         const nonMineCount = height * width - mineCount;
-        const revealedCount = matrix.reduce((sum, column) => sum + column.reduce((sum, cell) => sum + cell.isMine ? 0 : 1, 0), 0);
+        const revealedCount = matrix.reduce((sum, column) => sum + column.reduce((sum, cell) => sum + cell.isRevealed, 0), 0);
 
         return nonMineCount === revealedCount ? BOARD_STATE.WIN : BOARD_STATE.CONTINUE;
     }

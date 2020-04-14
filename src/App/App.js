@@ -14,31 +14,34 @@ export default class App extends React.Component {
 
         this.state = {
             difficulty: 'medium',
-            board: BOARD_PARAMETERS['medium']
+            boardId: Math.random()
         };
     }
 
-    onChangeHandler = event => {
-        this.setState({
-            difficulty: event.target.value,
-            board: { ...BOARD_PARAMETERS[event.target.value] }
-        });
+    changeGameDifficulty = event => {
+        this.setState({ difficulty: event.target.value, boardId: Math.random() });
+    }
+
+    resetGame = event => {
+        event.preventDefault();
+        this.setState({ boardId: Math.random() });
     }
 
     render = () => {
-        const { difficulty } = this.state;
+        const { difficulty, boardId } = this.state;
         const { height, width, mineCount } = BOARD_PARAMETERS[difficulty];
 
         return (
             <div className='app'>
-                <form>
-                    <select value={difficulty} onChange={this.onChangeHandler}>
-                        <option value='easy'>Easy</option>
-                        <option value='medium'>Medium</option>
-                        <option value='hard'>Hard</option>
+                <form className='game-controls'>
+                    <select className='game-difficulty' value={difficulty} onChange={this.changeGameDifficulty}>
+                        <option value='easy'>EASY</option>
+                        <option value='medium'>MEDIUM</option>
+                        <option value='hard'>HARD</option>
                     </select>
+                    <button className='game-reset' onClick={this.resetGame}>RESET</button>
                 </form>
-                <Board height={height} width={width} mineCount={mineCount} />
+                <Board id={boardId} height={height} width={width} mineCount={mineCount} />
             </div>
         );
     }

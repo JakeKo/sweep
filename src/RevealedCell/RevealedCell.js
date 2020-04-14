@@ -3,7 +3,7 @@ import './RevealedCell.css';
 
 export default class Cell extends React.Component {
     evaluateCellClass = () => {
-        return ['cell', this.props.isMine ? 'cell-mine' : `cell-value-${this.props.mineCount}`].join(' ');
+        return ['cell', 'cell-revealed', this.props.isMine ? 'cell-mine' : `cell-value-${this.props.mineCount}`].join(' ');
     }
 
     evaluteCellContent = () => {

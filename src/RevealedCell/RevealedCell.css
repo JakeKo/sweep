@@ -1,24 +1,14 @@
-.cell {
-    height: 25px;
-    width: 25px;
-    border: 1px solid grey;
-    background-color: white;
-    display: inline-block;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: monospace;
-    font-weight: bold;
-    font-size: 18px;
+.cell-revealed {
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.cell:hover {
-    background-color: #92BCEA;
-    cursor: pointer;
+.cell-revealed:hover {
+    background-color: rgba(255, 255, 255, 0.15);
 }
 
 .cell-mine {
-    background-color: red;
+    background-color: #F06543 !important;
+    color: white;
 }
 
 .cell-value-1 {
