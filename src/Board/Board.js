@@ -1,6 +1,7 @@
 import React from 'react';
 import './Board.css';
-import Cell from '../Cell/Cell';
+import RevealedCell from '../RevealedCell/RevealedCell';
+import HiddenCell from '../HiddenCell/HiddenCell';
 
 const BOARD_STATE = {
     GAME_OVER: 'GAME OVER',
@@ -64,6 +65,7 @@ export default class Board extends React.Component {
     }
 
     revealCell = (x, y) => {
+        // TODO: Handle user selecting a border non-zero cell
         const { height, width } = this.props;
         const spreadReveal = (matrix, x, y) => {
             if (matrix[x][y].isRevealed) return matrix;
@@ -99,6 +101,7 @@ export default class Board extends React.Component {
         });
     }
 
+    // TODO: Fix game win condition
     evaluateBoardState = () => {
         const { height, width, mineCount } = this.props;
         const { matrix, minePositions } = this.state;
@@ -117,7 +120,9 @@ export default class Board extends React.Component {
             <div className='board'>
                 {this.state.matrix.map(column =>
                     <div className='column' key={Math.random()}>
-                        {column.map(cell => <Cell key={Math.random()} model={cell} revealCell={this.revealCell} toggleFlagCell={this.toggleFlagCell} />)}
+                        {column.map(cell => cell.isRevealed ?
+                            <RevealedCell key={Math.random()} isMine={cell.isMine} mineCount={cell.mineCount} /> :
+                            <HiddenCell key={Math.random()} x={cell.x} y={cell.y} isFlagged={cell.isFlagged} revealCell={this.revealCell} toggleFlagCell={this.toggleFlagCell} />)}
                     </div>
                 )}
             </div>
