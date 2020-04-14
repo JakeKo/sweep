@@ -11,11 +11,10 @@ const BOARD_STATE = {
 export default class Board extends React.Component {
     constructor(props) {
         super(props);
+        this.state = this.initializeBoard(props);
+    }
 
-        const mineCount = 50;
-        const width = 25;
-        const height = 25;
-
+    initializeBoard({ width, height, mineCount }) {
         const boardModel = [...Array(width).keys()].map(x =>
             [...Array(height).keys()].map(y => ({
                 x,
@@ -37,7 +36,6 @@ export default class Board extends React.Component {
             }));
         }
 
-    
         // Place the mines and increment the count of surrounding cells
         const minePositions = [...set].map(JSON.parse);
         minePositions.forEach(({ x, y }) => {
@@ -52,15 +50,21 @@ export default class Board extends React.Component {
             if (x < width - 1 && y < height - 1) if (!boardModel[x + 1][y + 1].isMine) boardModel[x + 1][y + 1].mineCount++;
         });
 
-        this.state = {
-            width,
-            height,
-            matrix: boardModel,
-            minePositions
+        return {
+            minePositions,
+            matrix: boardModel
         };
     }
 
+    componentDidUpdate(prevProps) {
+        const { height, width, mineCount } = this.props;
+        if (prevProps.height !== height || prevProps.width !== width || prevProps.mineCount !== mineCount) {
+            this.setState(this.initializeBoard(this.props));
+        }
+    }
+
     revealCell = (x, y) => {
+        const { height, width } = this.props;
         const spreadReveal = (matrix, x, y) => {
             if (matrix[x][y].isRevealed) return matrix;
             matrix[x][y].isRevealed = true;
@@ -68,12 +72,12 @@ export default class Board extends React.Component {
 
             if (x > 0 && y > 0) matrix = spreadReveal(matrix, x - 1, y - 1);
             if (x > 0) matrix = spreadReveal(matrix, x - 1, y);
-            if (x > 0 && y < this.state.height - 1) matrix = spreadReveal(matrix, x - 1, y + 1);
+            if (x > 0 && y < height - 1) matrix = spreadReveal(matrix, x - 1, y + 1);
             if (y > 0) matrix = spreadReveal(matrix, x, y - 1);
-            if (x < this.state.width - 1) matrix = spreadReveal(matrix, x + 1, y);
-            if (x < this.state.width - 1 && y > 0) matrix = spreadReveal(matrix, x + 1, y - 1);
-            if (y < this.state.height - 1) matrix = spreadReveal(matrix, x, y + 1);
-            if (x < this.state.width - 1 && y < this.state.height - 1) matrix = spreadReveal(matrix, x + 1,y + 1);
+            if (x < width - 1) matrix = spreadReveal(matrix, x + 1, y);
+            if (x < width - 1 && y > 0) matrix = spreadReveal(matrix, x + 1, y - 1);
+            if (y < height - 1) matrix = spreadReveal(matrix, x, y + 1);
+            if (x < width - 1 && y < height - 1) matrix = spreadReveal(matrix, x + 1, y + 1);
 
             return matrix;
         };
@@ -96,11 +100,14 @@ export default class Board extends React.Component {
     }
 
     evaluateBoardState = () => {
-        const revealedMine = this.state.minePositions.some(({ x, y }) => this.state.matrix[x][y].isRevealed && this.state.matrix[x][y].isMine);
+        const { height, width, mineCount } = this.props;
+        const { matrix, minePositions } = this.state;
+
+        const revealedMine = minePositions.some(({ x, y }) => matrix[x][y].isRevealed && matrix[x][y].isMine);
         if (revealedMine) return BOARD_STATE.GAME_OVER;
 
-        const nonMineCount = this.state.height * this.state.width - this.state.minePositions.length;
-        const revealedCount = this.state.matrix.reduce((sum, column) => sum + column.reduce((sum, cell) => sum + cell.isMine ? 0 : 1, 0), 0);
+        const nonMineCount = height * width - mineCount;
+        const revealedCount = matrix.reduce((sum, column) => sum + column.reduce((sum, cell) => sum + cell.isMine ? 0 : 1, 0), 0);
 
         return nonMineCount === revealedCount ? BOARD_STATE.WIN : BOARD_STATE.CONTINUE;
     }
