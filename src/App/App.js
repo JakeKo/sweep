@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Board from '../Board/Board';
+import GameEndAlert from '../GameEndAlert/GameEndAlert';
 
 const BOARD_STATE = {
     GAME_OVER: 'GAME OVER',
@@ -62,12 +63,7 @@ export default class App extends React.Component {
 
                 <Board id={boardId} height={height} width={width} mineCount={mineCount} emitBoardState={this.respondToBoardState} />
 
-                {this.state.boardState !== BOARD_STATE.CONTINUE &&
-                    <form className='game-end-notification'>
-                        {this.state.boardState === BOARD_STATE.WIN ? 'You won!' : 'Game over.'}
-                        <button className='game-end-acknowledgement' onClick={this.resetGame}>Reset</button>
-                    </form>
-                }
+                {this.state.boardState !== BOARD_STATE.CONTINUE && <GameEndAlert boardState={this.state.boardState} resetGame={this.resetGame} />}
             </div>
         );
     }

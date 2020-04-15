@@ -60,16 +60,3 @@ html, body {
   cursor: pointer;
   border-radius: 4px;
 }
-
-.game-end-notification {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  height: 150px;
-  width: 250px;
-  font-family: monospace;
-  font-size: 24px;
-}
