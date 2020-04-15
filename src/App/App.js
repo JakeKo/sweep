@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import GameControls from '../GameControls/GameControls';
 import Board from '../Board/Board';
 import GameEndAlert from '../GameEndAlert/GameEndAlert';
 
@@ -52,17 +53,8 @@ export default class App extends React.Component {
 
         return (
             <div className='app'>
-                <form className='game-controls'>
-                    <select className='game-difficulty' value={difficulty} onChange={this.changeGameDifficulty}>
-                        <option value='easy'>EASY</option>
-                        <option value='medium'>MEDIUM</option>
-                        <option value='hard'>HARD</option>
-                    </select>
-                    <button className='game-reset' onClick={this.resetGame}>RESET</button>
-                </form>
-
+                <GameControls difficulty={difficulty} changeGameDifficulty={this.changeGameDifficulty} resetGame={this.resetGame} />
                 <Board id={boardId} height={height} width={width} mineCount={mineCount} emitBoardState={this.respondToBoardState} />
-
                 {this.state.boardState !== BOARD_STATE.CONTINUE && <GameEndAlert boardState={this.state.boardState} resetGame={this.resetGame} />}
             </div>
         );
