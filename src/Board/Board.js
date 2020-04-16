@@ -63,6 +63,7 @@ export default class Board extends React.Component {
         }
     }
 
+    // Handle clicking on a cell with the right number of flags around it to reveal adjacent cells
     revealCell = (x, y) => {
         const { height, width } = this.props;
         const spreadReveal = (matrix, x, y) => {

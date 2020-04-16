@@ -12,3 +12,7 @@ html, body {
   align-items: center;
   background: #121212;
 }
+
+.game-timer {
+  color: white;
+}

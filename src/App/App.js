@@ -23,15 +23,25 @@ export default class App extends React.Component {
         this.state = {
             difficulty: 'medium',
             boardId: Math.random(),
-            boardState: BOARD_STATE.CONTINUE
+            boardState: BOARD_STATE.CONTINUE,
+            timer: 0,
+            timerRunning: false
         };
+
+        setInterval(this.incrementTimer, 1000);
+    }
+
+    incrementTimer = () => {
+        this.state.timerRunning && this.setState({ timer: this.state.timer + 1 });
     }
 
     changeGameDifficulty = event => {
         this.setState({
             difficulty: event.target.value,
             boardId: Math.random(),
-            boardState: BOARD_STATE.CONTINUE
+            boardState: BOARD_STATE.CONTINUE,
+            timer: 0,
+            timerRunning: false
         });
     }
 
@@ -39,12 +49,24 @@ export default class App extends React.Component {
         event.preventDefault();
         this.setState({
             boardId: Math.random(),
-            boardState: BOARD_STATE.CONTINUE
+            boardState: BOARD_STATE.CONTINUE,
+            timer: 0,
+            timerRunning: false
         });
     }
 
     respondToBoardState = boardState => {
-        this.setState({ boardState });
+        this.setState({
+            boardState,
+            timerRunning: boardState === BOARD_STATE.CONTINUE
+        });
+    }
+
+    getTimerOutput = () => {
+        return [
+            Math.floor(this.state.timer / 60).toString().padStart(2, '0'),
+            (this.state.timer % 60).toString().padStart(2, '0'),
+        ].join(':')
     }
 
     render = () => {
@@ -53,6 +75,7 @@ export default class App extends React.Component {
 
         return (
             <div className='app'>
+                <div className='game-timer'>{this.getTimerOutput()}</div>
                 <GameControls difficulty={difficulty} changeGameDifficulty={this.changeGameDifficulty} resetGame={this.resetGame} />
                 <Board id={boardId} height={height} width={width} mineCount={mineCount} emitBoardState={this.respondToBoardState} />
                 {this.state.boardState !== BOARD_STATE.CONTINUE && <GameEndAlert boardState={this.state.boardState} resetGame={this.resetGame} />}
