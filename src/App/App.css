@@ -15,4 +15,6 @@ html, body {
 
 .game-timer {
   color: white;
+  font-family: monospace;
+  font-size: 18px;
 }

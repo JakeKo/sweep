@@ -2,12 +2,7 @@ import React from 'react';
 import './Board.css';
 import RevealedCell from '../RevealedCell/RevealedCell';
 import HiddenCell from '../HiddenCell/HiddenCell';
-
-const BOARD_STATE = {
-    GAME_OVER: 'GAME OVER',
-    CONTINUE: 'CONTINUE',
-    WIN: 'WIN'
-};
+import { BOARD_STATE } from '../utilities';
 
 export default class Board extends React.Component {
     constructor(props) {

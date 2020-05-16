@@ -16,6 +16,7 @@
   font-family: monospace;
   font-size: 24px;
   z-index: 2;
+  text-align: center;
 }
 
 .game-end-acknowledgement {
