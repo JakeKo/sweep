@@ -146,6 +146,11 @@ const getStyles = (theme, customStyles = () => ({})) => {
         alignItems: 'flex-end'
     };
 
+    const fullScreen = {
+        width: '100vw',
+        height: '100vh'
+    };
+
     const fontBody = {
         fontFamily: theme.font.body.typeface,
         fontWeight: theme.font.body.weight,
@@ -173,6 +178,7 @@ const getStyles = (theme, customStyles = () => ({})) => {
         flexColBL,
         flexColBC,
         flexColBR,
+        fullScreen,
         fontBody
     };
 

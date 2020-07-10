@@ -9,8 +9,7 @@ import GameEndAlert from './GameEndAlert';
 const customStyles = (theme, baseStyles) => ({
     app: {
         ...baseStyles.flexColCC,
-        width: '100vw',
-        height: '100vh'
+        ...baseStyles.fullScreen
     },
     gameTimer: {
         color: theme.color.primary.darker,
@@ -83,16 +82,14 @@ class App extends React.Component {
         const { height, width, mineCount } = BOARD_PARAMETERS[difficulty];
         const { app, gameTimer } = getStyles(theme, customStyles);
 
-        return (
-            <ThemeProvider theme={theme}>
-                <div style={app}>
-                    <div style={gameTimer}>{formatTimerDisplay(timer)}</div>
-                    <GameControls difficulty={difficulty} changeGameDifficulty={this.changeGameDifficulty} resetGame={this.resetGame} />
-                    <Board id={boardId} height={height} width={width} mineCount={mineCount} emitBoardState={this.respondToBoardState} />
-                    {boardState !== BOARD_STATE.CONTINUE && <GameEndAlert boardState={boardState} timerValue={timer} resetGame={this.resetGame} />}
-                </div>
-            </ThemeProvider>
-        );
+        return <ThemeProvider theme={theme}>
+            <div style={app}>
+                <div style={gameTimer}>{formatTimerDisplay(timer)}</div>
+                <GameControls difficulty={difficulty} changeGameDifficulty={this.changeGameDifficulty} resetGame={this.resetGame} />
+                <Board id={boardId} height={height} width={width} mineCount={mineCount} emitBoardState={this.respondToBoardState} />
+                {boardState !== BOARD_STATE.CONTINUE && <GameEndAlert boardState={boardState} timerValue={timer} resetGame={this.resetGame} />}
+            </div>
+        </ThemeProvider>;
     }
 };
 

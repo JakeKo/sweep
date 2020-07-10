@@ -5,8 +5,7 @@ import { BOARD_STATE, formatTimerDisplay } from '../utilities/utilities';
 const customStyles = (theme, baseStyles) => ({
     background: {
         position: 'absolute',
-        width: '100vw',
-        height: '100vh',
+        ...baseStyles.fullScreen,
         zIndex: 1,
         background: 'rgba(0, 0, 0, 0.4)'
     },
