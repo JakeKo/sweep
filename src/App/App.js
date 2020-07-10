@@ -4,8 +4,21 @@ import GameControls from '../GameControls/GameControls';
 import Board from '../Board/Board';
 import GameEndAlert from '../GameEndAlert/GameEndAlert';
 import { formatTimerDisplay, BOARD_PARAMETERS, BOARD_STATE } from '../utilities';
+import { ThemeProvider, themes, getStyles } from '../theming';
 
-export default class App extends React.Component {
+const customStyles = (theme, baseStyles) => ({
+    app: {
+        ...baseStyles.flexColCC,
+        width: '100vw',
+        height: '100vh'
+    },
+    gameTimer: {
+        color: theme.color.primary.darker,
+        ...baseStyles.fontBody
+    }
+});
+
+class App extends React.Component {
     constructor(props) {
         super(props);
 
@@ -14,7 +27,8 @@ export default class App extends React.Component {
             boardId: Math.random(),
             boardState: BOARD_STATE.CONTINUE,
             timer: 0,
-            timerLoop: undefined
+            timerLoop: undefined,
+            theme: themes['light']
         };
     }
 
@@ -65,16 +79,21 @@ export default class App extends React.Component {
     }
 
     render = () => {
-        const { difficulty, boardId, boardState, timer } = this.state;
+        const { difficulty, boardId, boardState, timer, theme } = this.state;
         const { height, width, mineCount } = BOARD_PARAMETERS[difficulty];
+        const { app, gameTimer } = getStyles(theme, customStyles);
 
         return (
-            <div className='app'>
-                <div className='game-timer'>{formatTimerDisplay(timer)}</div>
-                <GameControls difficulty={difficulty} changeGameDifficulty={this.changeGameDifficulty} resetGame={this.resetGame} />
-                <Board id={boardId} height={height} width={width} mineCount={mineCount} emitBoardState={this.respondToBoardState} />
-                {boardState !== BOARD_STATE.CONTINUE && <GameEndAlert boardState={boardState} timerValue={timer} resetGame={this.resetGame} />}
-            </div>
+            <ThemeProvider theme={theme}>
+                <div style={app}>
+                    <div style={gameTimer}>{formatTimerDisplay(timer)}</div>
+                    <GameControls difficulty={difficulty} changeGameDifficulty={this.changeGameDifficulty} resetGame={this.resetGame} />
+                    <Board id={boardId} height={height} width={width} mineCount={mineCount} emitBoardState={this.respondToBoardState} />
+                    {boardState !== BOARD_STATE.CONTINUE && <GameEndAlert boardState={boardState} timerValue={timer} resetGame={this.resetGame} />}
+                </div>
+            </ThemeProvider>
         );
     }
 };
+
+export default App;

@@ -1,10 +1,10 @@
 import React from 'react';
-import './Board.css';
-import RevealedCell from '../RevealedCell/RevealedCell';
 import HiddenCell from '../HiddenCell/HiddenCell';
+import RevealedCell from '../RevealedCell/RevealedCell';
+import { getStyles, withTheme } from '../theming';
 import { BOARD_STATE } from '../utilities';
 
-export default class Board extends React.Component {
+class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = this.initializeBoard(props);
@@ -109,16 +109,20 @@ export default class Board extends React.Component {
     }
 
     render = () => {
+        const { flexRow, flexCol } = getStyles(this.props.theme);
+
         return (
-            <div className='board'>
+            <div style={flexRow}>
                 {this.state.matrix.map(column =>
-                    <div className='column' key={Math.random()}>
-                        {column.map(cell => cell.isRevealed ?
-                            <RevealedCell key={Math.random()} isMine={cell.isMine} mineCount={cell.mineCount} /> :
-                            <HiddenCell key={Math.random()} x={cell.x} y={cell.y} isFlagged={cell.isFlagged} revealCell={this.revealCell} toggleFlagCell={this.toggleFlagCell} />)}
+                    <div style={flexCol} key={Math.random()}>
+                        {column.map(cell => cell.isRevealed
+                            ? <RevealedCell key={Math.random()} {...cell} />
+                            : <HiddenCell key={Math.random()} {...cell} revealCell={this.revealCell} toggleFlagCell={this.toggleFlagCell} />)}
                     </div>
                 )}
             </div>
         );
     }
 };
+
+export default withTheme(Board);
