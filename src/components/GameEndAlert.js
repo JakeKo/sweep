@@ -1,6 +1,6 @@
 import React from 'react';
-import { getStyles, withTheme } from '../theming';
-import { BOARD_STATE, formatTimerDisplay } from '../utilities';
+import { getStyles, withTheme } from '../utilities/theming';
+import { BOARD_STATE, formatTimerDisplay } from '../utilities/utilities';
 
 const customStyles = (theme, baseStyles) => ({
     background: {

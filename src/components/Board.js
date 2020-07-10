@@ -1,8 +1,8 @@
 import React from 'react';
-import HiddenCell from '../HiddenCell/HiddenCell';
-import RevealedCell from '../RevealedCell/RevealedCell';
-import { getStyles, withTheme } from '../theming';
-import { BOARD_STATE } from '../utilities';
+import { getStyles, withTheme } from '../utilities/theming';
+import { BOARD_STATE } from '../utilities/utilities';
+import HiddenCell from './HiddenCell';
+import RevealedCell from './RevealedCell';
 
 class Board extends React.Component {
     constructor(props) {

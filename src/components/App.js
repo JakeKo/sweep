@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.css';
-import GameControls from '../GameControls/GameControls';
-import Board from '../Board/Board';
-import GameEndAlert from '../GameEndAlert/GameEndAlert';
-import { formatTimerDisplay, BOARD_PARAMETERS, BOARD_STATE } from '../utilities';
-import { ThemeProvider, themes, getStyles } from '../theming';
+import '../index.css';
+import { getStyles, ThemeProvider, themes } from '../utilities/theming';
+import { BOARD_PARAMETERS, BOARD_STATE, formatTimerDisplay } from '../utilities/utilities';
+import Board from './Board';
+import GameControls from './GameControls';
+import GameEndAlert from './GameEndAlert';
 
 const customStyles = (theme, baseStyles) => ({
     app: {

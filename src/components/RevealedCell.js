@@ -1,6 +1,5 @@
 import React from 'react';
-import './RevealedCell.css';
-import { withTheme, getStyles } from '../theming';
+import { getStyles, withTheme } from '../utilities/theming';
 
 const colors = {
     1: 'blue',
@@ -37,7 +36,7 @@ const customStyles = (theme, baseStyles) => ({
     })
 });
 
-class Cell extends React.Component {
+class RevealedCell extends React.Component {
     evaluteCellContent = () => {
         const { isMine, mineCount } = this.props;
         return isMine ? 'M' : (mineCount > 0 ? mineCount : '');
@@ -52,10 +51,8 @@ class Cell extends React.Component {
             ...(isMine ? mine : cellValue(mineCount))
         };
 
-        return (
-            <div style={style}>{this.evaluteCellContent()}</div>
-        );
+        return <div style={style}>{this.evaluteCellContent()}</div>;
     }
 }
 
-export default withTheme(Cell);
+export default withTheme(RevealedCell);

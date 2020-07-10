@@ -1,5 +1,5 @@
 import React from 'react';
-import { withTheme, getStyles } from '../theming';
+import { getStyles, withTheme } from '../utilities/theming';
 
 const customStyles = (theme, baseStyles) => ({
     cell: {

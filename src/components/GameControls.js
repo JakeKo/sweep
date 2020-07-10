@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStyles, withTheme } from '../theming';
+import { getStyles, withTheme } from '../utilities/theming';
 
 const customStyles = (theme, baseStyles) => ({
     controls: {
